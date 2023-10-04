@@ -25,7 +25,7 @@ class Neuron:
         # spike only when two or more input arrive simultaneosly.
         self.tau = tau
 
-        # The threshold above what the neuron spikes
+        # The threshold above which the neuron fires
         self.threshold = threshold
 
         # Time step for decaying (still do not known what is this)
@@ -54,12 +54,12 @@ class Neuron:
         return self.fire_spike()
 
 
-class SineWaveApp(Gtk.Window):
+class SpikingNeuronApp(Gtk.Window):
     def __init__(self):
         Gtk.Window.__init__(self, title="Spike neuron simulation")
         self.connect("destroy", Gtk.main_quit)
 
-        self.neuron = Neuron(1)
+        self.neuron = Neuron()
 
         vbox = Gtk.VBox()
         
@@ -187,6 +187,6 @@ class SineWaveApp(Gtk.Window):
 
 
 if __name__ == "__main__":
-    win = SineWaveApp()
+    win = SpikingNeuronApp()
     win.show_all()
     Gtk.main()
