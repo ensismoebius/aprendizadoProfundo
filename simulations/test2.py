@@ -67,22 +67,22 @@ class SineWaveApp(Gtk.Window):
         vbox.pack_start(self.spike_button, expand=False, fill=False, padding=5)
 
         # Create a Matplotlib figure and add it to the GTK window
-        #self.fig, self.ax = plt.subplots()
-        self.fig, (self.ax1, self.ax2) = plt.subplots(2, 1, gridspec_kw={'height_ratios': [2, 1]})
-       
-        self.x = np.linspace(0, 1000, 1000)
-        self.y = np.zeros(1000)
+        # self.fig, self.ax = plt.subplots()
+        self.fig, (self.ax1, self.ax2) = plt.subplots(
+            2, 1, gridspec_kw={'height_ratios': [2, 1]})
+
+        self.time = np.linspace(0, 1000, 1000)
+        self.voltages = np.zeros(1000)
         self.spike_activity = np.zeros(1000)
 
-        #self.line, = self.ax.plot(self.x, self.y)
-        self.line1, = self.ax1.plot(self.x, self.y)
-        self.line2, = self.ax2.plot(self.x, self.spike_activity)
-
+        # self.line, = self.ax.plot(self.time, self.voltages)
+        self.line1, = self.ax1.plot(self.time, self.voltages)
+        self.line2, = self.ax2.plot(self.time, self.spike_activity)
 
         self.ax1.set_xlabel('Time')
         self.ax1.set_ylabel('Membrane voltage')
         self.ax1.set_title('Membrane voltage x time')
-        
+
         self.ax2.set_xlabel('Time')
         self.ax2.set_ylabel('Spike Activity')
         self.ax2.set_title('Spike Activity x time')
@@ -99,18 +99,18 @@ class SineWaveApp(Gtk.Window):
         self.neuron.add_synaptic_weight(1.0)
 
     def update_plot(self):
-        self.x[:-1] = self.x[1:]
-        self.x[-1] = self.x[-1] + 1
+        self.time[:-1] = self.time[1:]
+        self.time[-1] = self.time[-1] + 1
 
-        self.y[:-1] = self.y[1:]
-        self.y[-1] = self.neuron.voltage
-
+        self.voltages[:-1] = self.voltages[1:]
+        self.voltages[-1] = self.neuron.voltage
 
         self.spike_activity[:-1] = self.spike_activity[1:]
         self.spike_activity[-1] = self.neuron.iterate()
 
-        self.line1.set_data(self.x, self.y)  # Update the voltage plot
-        self.line2.set_data(self.x, self.spike_activity)  # Update the spike activity plot
+        self.line1.set_data(self.time, self.voltages)  # Update the voltage plot
+        # Update the spike activity plot
+        self.line2.set_data(self.time, self.spike_activity)
 
         self.ax1.relim()
         self.ax1.autoscale_view()
