@@ -10,14 +10,14 @@ gi.require_version("Gtk", "3.0")
 class Neuron:
     """
     Leak integrate and fire neuron - LIF
-    
+
     """
 
     def __init__(self, tau=10, threshold=1):
-        
+
         # Initial membrane voltage
         self.voltage = 0
-        
+
         # The smaller tau is the faster the voltage decays
         # When tau is large the neuron acts as an intergrator summing its inputs
         # and firing when a certain threshold is reached.
@@ -25,17 +25,20 @@ class Neuron:
         # spike only when two or more input arrive simultaneosly.
         self.tau = tau
 
+        # The threshold above what the neuron spikes
+        self.threshold = threshold
+
         # Time step for decaying (still do not known what is this)
         self.timeStep = 0.1
-        
-        # The by which the manbrane voltage decays each time step
+
+        # The by which the membrane voltage decays each time step
         self.alpha = np.exp(-self.timeStep/self.tau)
-        
-        
 
     def fire_spike(self):
-        self.voltage = 0
-        return 1
+        if self.voltage > self.threshold:
+            self.voltage = 0
+            return 1
+        return 0
 
     def add_synaptic_weight(self, weigth):
         # Membrane voltage integration
@@ -44,6 +47,7 @@ class Neuron:
     def iterate(self):
         # Membrane voltage leak
         self.voltage = max(self.voltage * self.alpha, 0)
+        return self.fire_spike()
 
 
 class SineWaveApp(Gtk.Window):
@@ -63,15 +67,25 @@ class SineWaveApp(Gtk.Window):
         vbox.pack_start(self.spike_button, expand=False, fill=False, padding=5)
 
         # Create a Matplotlib figure and add it to the GTK window
-        self.fig, self.ax = plt.subplots()
+        #self.fig, self.ax = plt.subplots()
+        self.fig, (self.ax1, self.ax2) = plt.subplots(2, 1, gridspec_kw={'height_ratios': [2, 1]})
+       
         self.x = np.linspace(0, 1000, 1000)
         self.y = np.zeros(1000)
+        self.spike_activity = np.zeros(1000)
 
-        self.line, = self.ax.plot(self.x, self.y)
+        #self.line, = self.ax.plot(self.x, self.y)
+        self.line1, = self.ax1.plot(self.x, self.y)
+        self.line2, = self.ax2.plot(self.x, self.spike_activity)
 
-        self.ax.set_xlabel('Time')
-        self.ax.set_ylabel('Membrane voltage')
-        self.ax.set_title('Membrane voltage x time')
+
+        self.ax1.set_xlabel('Time')
+        self.ax1.set_ylabel('Membrane voltage')
+        self.ax1.set_title('Membrane voltage x time')
+        
+        self.ax2.set_xlabel('Time')
+        self.ax2.set_ylabel('Spike Activity')
+        self.ax2.set_title('Spike Activity x time')
 
         self.canvas = FigureCanvas(self.fig)
         vbox.pack_start(self.canvas, expand=True, fill=True, padding=5)
@@ -91,14 +105,21 @@ class SineWaveApp(Gtk.Window):
         self.y[:-1] = self.y[1:]
         self.y[-1] = self.neuron.voltage
 
-        self.line.set_data(self.x, self.y)  # Update the plot data
 
-        self.ax.relim()
-        self.ax.autoscale_view()
+        self.spike_activity[:-1] = self.spike_activity[1:]
+        self.spike_activity[-1] = self.neuron.iterate()
 
-        self.fig.canvas.draw_idle()  # Draw the updated plot
+        self.line1.set_data(self.x, self.y)  # Update the voltage plot
+        self.line2.set_data(self.x, self.spike_activity)  # Update the spike activity plot
 
-        self.neuron.iterate()
+        self.ax1.relim()
+        self.ax1.autoscale_view()
+
+        self.ax2.relim()
+        self.ax2.autoscale_view()
+
+        self.fig.canvas.draw_idle()  # Draw the updated plots
+
         return True
 
 
