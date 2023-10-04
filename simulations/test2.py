@@ -28,10 +28,11 @@ class Neuron:
         # The threshold above which the neuron fires
         self.threshold = threshold
 
-        # Time step for decaying (still do not known what is this)
+        # Time step for decaying (i still don´t known what this really is)
+        # Bigger the number faster the decay
         self.timeStep = 0.1
 
-        # The by which the membrane voltage decays each time step
+        # The rate by which the membrane voltage decays each time step
         self.alpha = np.exp(-self.timeStep/self.tau)
         
     def set_tau(self, tau):
