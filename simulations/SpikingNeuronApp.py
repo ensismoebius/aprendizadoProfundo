@@ -59,7 +59,7 @@ class Neuron:
 
 class AudioReceiver:
     def __init__(self):
-        self.CHUNK = 128
+        self.CHUNK = 64
         self.FORMAT = pyaudio.paInt16
         self.CHANNELS = 1
         self.RATE = 44100
@@ -182,7 +182,7 @@ class SpikingNeuronApp(Gtk.Window):
 
     def on_mic_data_received(self, data):
         # Calculate some value from the audio data that you want to use as input
-        audio_input_value = np.mean(np.abs(data))  # You can adjust this calculation
+        audio_input_value = np.mean(data)  # You can adjust this calculation
     
         # Add the audio input value as a synaptic weight to the neuron
         self.neuron.add_synaptic_weight(audio_input_value)
