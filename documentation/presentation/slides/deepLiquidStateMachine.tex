@@ -10,10 +10,6 @@
 		\label{fig:leterallyaliquidnetwork}
 	\end{figure}
 	
-	
-	
-	
-	
 	\par LSM can be adapted to multiple computation as the projection neurons can extract as many different characteristics one desires as can be seen in Figure \ref{fig:projectionneurons}.
 	
 	\begin{figure}
@@ -23,7 +19,35 @@
 		\label{fig:projectionneurons}
 	\end{figure}
 
+\end{frame}
+
+\section{More liquid}
+
+\begin{frame}[allowframebreaks]
 	
+	\par Also, according to \cite{hasani2020liquid} the inspiration comes from the nervous system of the nematode \textit{C. elegans} which, despite having just 302 neuron, have pretty complex behavior. In this model the networks parameter changes over time according to a set of nested differential equations \textbf{while it is already in use} i.e. \textbf{this model does not need a training phase in order to adapt}.
+	
+	\par Conversely, LNNs introduce dynamic connectivity patterns, allowing information to flow and interact in a fluid manner.
+	
+	\par Liquid Neural Networks, also known as Liquid State Machines (LSMs), were first introduced by Wolfgang Maass\cite{6789852}. The primary departure from traditional ANNs lies in their dynamic and recurrent architecture. While conventional ANNs consist of fixed layers of interconnected neurons, LNNs employ a vast collection of interconnected neurons that are constantly in a state of change. This dynamic behavior allows LNNs to process temporal data, sequential information, and streaming inputs with remarkable flexibility and efficiency.
+	
+	\begin{itemize}
+		\item Adaptability: Their dynamic nature enables them to respond dynamically to varying data distributions, making them well-suited for tasks involving non-stationary data.
+		\item Robustness: LNNs have shown improved robustness against noise and input variations. The fluid-like behavior allows them to self-adjust and filter out irrelevant information, leading to enhanced generalization capabilities.
+		\item Exploration of Solution Space: LNNs encourage solution space exploration by providing flexibility in the network’s structure. The dynamic connectivity patterns enable the network to explore diverse pathways, potentially discovering novel solutions to complex problems.
+		\item Reduced Overfitting: Due to their continuous learning capabilities, LNNs are less prone to overfitting, which often occurs in static networks, resulting in more accurate and generalizable models.
+	\end{itemize}
+	
+	\par Being $f$ the neural network, $I(t)$ its inputs, $t$ current time, $\theta$ and $A$ the hiperparameters and $\tau$ is time constant than the equation \ref{eq:liquidRNN} represents the Liquid Time-Constant recurrent neural networks (LTC) hidden state's derivative \cite{hasani2020liquid}.
+	
+	\begin{equation}
+		\label{eq:liquidRNN}
+		\dfrac{d x(t)}{dt} = - \left[\dfrac{1}{\tau} + f(x(t),I(t), t, \theta)\right] x(t) + f(x(t),I(t), t, \theta) A \qquad.
+	\end{equation}
+	
+	\par To simplify a neuron in these kind of networks can be expressed like in the listing .
+	
+	\input{listings/LiquidTimeConstantNeuron.py}
 	
 	
 \end{frame}
