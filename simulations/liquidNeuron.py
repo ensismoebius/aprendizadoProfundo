@@ -1,4 +1,6 @@
-\begin{lstlisting}[language=Python, caption={Liquid neuron},label=lst:liquidNeuron]
+import numpy as np
+import matplotlib.pyplot as plt
+
 class LiquidTimeConstantNeuron:
     def __init__(self):
         self.time_constant = 1.0
@@ -11,6 +13,9 @@ class LiquidTimeConstantNeuron:
         # Update the state based on the time constant and time step
         return state - (state / self.time_constant) + np.sin(time_step)
 
+# Create a Liquid Time-Constant Neuron
+ltc_neuron = LiquidTimeConstantNeuron()
+
 # Simulate over time
 duration = 10.0
 time = np.arange(0, duration, 0.1)
@@ -22,4 +27,9 @@ for t in time[1:]:
     new_state = ltc_neuron.update_state(states[-1], t)
     states.append(new_state)
 
-\end{lstlisting}
+# Plot the results
+plt.plot(time, states)
+plt.xlabel("Time")
+plt.ylabel("State")
+plt.title("Neuron with Adjustable Time Constant")
+plt.show()
