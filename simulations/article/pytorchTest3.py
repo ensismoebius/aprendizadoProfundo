@@ -5,45 +5,51 @@ import torch.nn.functional as F
 from torch.utils.data import DataLoader, TensorDataset
 import matplotlib.pyplot as plt
 
+def get_tensor_size_after_conv(input_size, convolution_kernel_size):
+    return 1 +(input_size - convolution_kernel_size)
+
+def get_tensor_size_after_maxpool(input_size, poll_kernel_size):
+    return math.floor(input_size / poll_kernel_size)
+
+
 # Define a simple neural network architecture with dynamic size calculation
 class EEGNet(nn.Module):
-    def __init__(self, input_channels, input_size):
+    def __init__(self, input_channels, input_timepoints):
         super(EEGNet, self).__init__()
         
-        # Calculates the features size after 1st conv. and maxpoll
-        features_size = self.get_tensor_size_after_conv(input_size,5)
-        features_size = self.get_tensor_size_after_maxpool(features_size,2)
-        # Calculates the features size after 2nd conv. and maxpoll
-        features_size = self.get_tensor_size_after_conv(features_size,5)
-        features_size = self.get_tensor_size_after_maxpool(features_size,2)
-        # Calculate the size of the features after the conv and pool layers
-        features_size = self.get_size_after_flatten(features_size, 32)
+        # Calculate the size of the features after the 1st conv and pool layers
+        self.feature_size = get_tensor_size_after_conv(input_timepoints,5)
+        self.feature_size = get_tensor_size_after_maxpool(self.feature_size,2)
+        # Calculate the size of the features after the 2nd conv and pool layers
+        self.feature_size = get_tensor_size_after_conv(self.feature_size,5)
+        self.feature_size = get_tensor_size_after_maxpool(self.feature_size,2)
+        # Calculate the size of the features after the flatten
+        self.feature_size = self.feature_size * 32
         
-        self.model = nn.Sequential(
-            nn.MaxPool1d(kernel_size=2),
-            nn.Conv1d(in_channels=input_channels, out_channels=16, kernel_size=5),
-            nn.Conv1d(in_channels=16, out_channels=32, kernel_size=5),
-            nn.MaxPool1d(kernel_size=2),
-            nn.Linear(features_size, 128),
-            nn.Linear(128, 27)
-        )
+        self.conv1 = nn.Conv1d(in_channels=input_channels, out_channels=16, kernel_size=5)
+        self.pool1 = nn.MaxPool1d(kernel_size=2)
+        self.conv2 = nn.Conv1d(in_channels=16, out_channels=32, kernel_size=5)
+        self.pool2 = nn.MaxPool1d(kernel_size=2)
+        self.fl1 = nn.Flatten()
+        self.fc1 = nn.Linear(self.feature_size, 128)
+        self.relu1 = nn.ReLU()
+        self.fc2 = nn.Linear(128, 27)
 
     def forward(self, x):
-        return self.model(x)
-
-    def get_tensor_size_after_conv(self, input_size, convolution_kernel_size):
-        return 1 + (input_size - convolution_kernel_size)
-
-    def get_tensor_size_after_maxpool(self, input_size, poll_kernel_size):
-        return math.floor(input_size / poll_kernel_size)
-
-    def get_size_after_flatten(self, input_size, channels_amount):
-        return input_size * channels_amount
+        x = self.conv1(x)
+        x = self.pool1(x)
+        x = self.conv2(x)
+        x = self.pool2(x)
+        x = self.fl1(x)
+        x = self.fc1(x)
+        x = self.relu1(x)
+        x = self.fc2(x)
+        return x
 
 # Create the neural network
 input_channels = 4  # number of EEG channels
 input_timepoints = 250  # number of time points in each EEG sample
-net = EEGNet(input_channels=input_channels, input_size=input_timepoints)
+net = EEGNet(input_channels=input_channels, input_timepoints=input_timepoints)
 
 # Define a loss function and optimizer
 criterion = nn.CrossEntropyLoss()
