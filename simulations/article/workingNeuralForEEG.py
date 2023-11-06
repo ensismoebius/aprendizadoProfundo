@@ -104,9 +104,9 @@ net.float()
 # # Create a DataLoader instance
 path = '/home/ensismoebius/Documentos/UNESP/doutorado/databases/Base de Datos Habla Imaginada/S01/S01_EEG.mat'
 eegDataset = EEGDataset(path)
-# dataloader = DataLoader(eegDataset, batch_size=4, shuffle=True)
+dataloader = DataLoader(eegDataset, batch_size=4, shuffle=True)
 
-# net.start_train(dataloader, 200, 0.0001)
+# net.start_train(dataloader, 30, 0.0001)
 # net.save_model('test.pth')
 net.load_model('test.pth')
 
@@ -116,5 +116,7 @@ sample_data, sample_label = eegDataset.__getitem__(8)
 input_data = sample_data.unsqueeze(0)  # Adds one dimension
 output = net(input_data)
 
-print(sample_label.item())
-print(torch.argmax(output).item())
+label = sample_label.item()
+resul = torch.argmax(output).item()
+
+print('Input: %s, Result: %s' %(eegDataset.estimuli[label], eegDataset.estimuli[resul]))

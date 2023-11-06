@@ -19,33 +19,31 @@ class EEGDataset(Dataset):
         ### Setting up the properties ###
         #################################
         
-        self.estimulos = {
-                "Nenhum" : -1,
-                "A" : 1,
-                "E" : 2,
-                "I" : 3,
-                "O" : 4,
-                "U" : 5,
-                "Arriba" : 6,
-                "Abajo" : 7,
-                "Adelante" : 8,
-                "Atrás" : 9,
-                "Derecha" : 10,
-                "Izquierda" : 11,
+        self.estimuli = {
+                1 : "A",
+                2 : "E",
+                3 : "I",
+                4 : "O",
+                5 : "U",
+                6 : "Arriba",
+                7 : "Abajo",
+                8 : "Adelante",
+                9 : "Atrás",
+                10 : "Derecha",
+                11 : "Izquierda"
             }
         
         # Modalities
         self.modalities = {
-            "Selecione" : -1,
-            "Imaginada" : 1,
-            "Falada" : 2
+            1 : "Imaginada",
+            2 : "Falada" 
         }
         
         # Artfacts
         self.artfacts = {
-            "Indiferente" : -1,
-            "Com artefato" : 1,
-            "Sem artefato" : 2
+            -1 : "Indiferente",  
+            1 : "Com artefato", 
+            2 : "Sem artefato" 
         }
 
         self.dataframe = pd.DataFrame(mat['EEG'])
