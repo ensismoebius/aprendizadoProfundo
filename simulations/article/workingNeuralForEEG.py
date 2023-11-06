@@ -4,6 +4,7 @@ import torch.nn as nn
 from data import EEGDataset
 from torch import nn, save, load
 from torch.utils.data import DataLoader, TensorDataset
+import numpy as np
 
 import matplotlib.pyplot as plt
 
@@ -106,6 +107,14 @@ net = EEGNet(input_channels=input_channels, input_timepoints=input_timepoints)
 path = '/home/ensismoebius/Documentos/UNESP/doutorado/databases/Base de Datos Habla Imaginada/S01/S01_EEG.mat'
 eegDataset = EEGDataset(path)
 dataloader = DataLoader(eegDataset, batch_size=4, shuffle=True)
+
+for i in range(len(eegDataset)):
+    data, label = eegDataset[i]
+    print(type(data), type(label))
+    if not isinstance(data, (torch.Tensor, np.ndarray)):
+        print(f"Invalid data type at index {i}: {type(data)}")
+        break
+
 
 net.start_train(dataloader, 200, 0.0001)
 net.save_model('test.pth')
