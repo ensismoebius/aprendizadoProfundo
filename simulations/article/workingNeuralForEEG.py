@@ -73,7 +73,7 @@ class EEGNet(nn.Module):
                 # print statistics
                 running_loss += loss.item()
                 if i % 6 == 0:  # print every 6 mini-batches
-                    print('[%d, %5d] loss: %.3f' %
+                    print('[%d, %5d] loss: %.8f' %
                         (epoch + 1, i + 1, running_loss / 10))
                     running_loss = 0.0
 
@@ -96,27 +96,17 @@ class EEGNet(nn.Module):
 # Create the neural network
 input_channels = 6  # number of EEG channels
 input_timepoints = 4096  # number of time points in each EEG sample
-net = EEGNet(input_channels=input_channels, input_timepoints=input_timepoints)
+net = EEGNet(input_channels, input_timepoints)
 
-# Prepare your dataset
-# Example (dummy data and labels):
-# X_dummy = torch.randn(26, 4, 4096)  # 100 samples of 4-channel EEG data
-# y_dummy = torch.linspace(0, 25, steps=26)  # 26 character labels
+# Ensures that the networks runs with floats
+net.float()
 
 # Create a DataLoader instance
 path = '/home/ensismoebius/Documentos/UNESP/doutorado/databases/Base de Datos Habla Imaginada/S01/S01_EEG.mat'
 eegDataset = EEGDataset(path)
 dataloader = DataLoader(eegDataset, batch_size=4, shuffle=True)
 
-for i in range(len(eegDataset)):
-    data, label = eegDataset[i]
-    print(type(data), type(label))
-    if not isinstance(data, (torch.Tensor, np.ndarray)):
-        print(f"Invalid data type at index {i}: {type(data)}")
-        break
-
-
-net.start_train(dataloader, 200, 0.0001)
+net.start_train(dataloader, 30, 0.0001)
 net.save_model('test.pth')
 net.load_model('test.pth')
 

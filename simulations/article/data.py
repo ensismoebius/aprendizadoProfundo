@@ -70,8 +70,8 @@ class EEGDataset(Dataset):
         return len(self.labels)
         
     def __getitem__(self, idx):
-        sample_data =  torch.tensor(self.data[idx].tolist()) # Convert numpy arrays to tensors
-        sample_label = torch.tensor(self.labels[idx].tolist())  # Ensure labels are also tensors
+        sample_data =  torch.tensor(self.data[idx].tolist(),dtype=torch.float) # Convert numpy arrays to tensors
+        sample_label = torch.tensor(self.labels[idx].tolist(),dtype=torch.float)  # Ensure labels are also tensors
         return sample_data, sample_label
 
     # Auxiliary methods            
