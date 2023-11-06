@@ -1,8 +1,10 @@
 import math
 import torch
 import torch.nn as nn
+from data import EEGDataset
 from torch import nn, save, load
 from torch.utils.data import DataLoader, TensorDataset
+
 import matplotlib.pyplot as plt
 
 # Define a simple neural network architecture with dynamic size calculation
@@ -91,23 +93,23 @@ class EEGNet(nn.Module):
         return math.floor(input_size / poll_kernel_size)
 
 # Create the neural network
-input_channels = 4  # number of EEG channels
-input_timepoints = 250  # number of time points in each EEG sample
+input_channels = 6  # number of EEG channels
+input_timepoints = 4096  # number of time points in each EEG sample
 net = EEGNet(input_channels=input_channels, input_timepoints=input_timepoints)
 
 # Prepare your dataset
 # Example (dummy data and labels):
-X_dummy = torch.randn(26, 4, 250)  # 100 samples of 4-channel EEG data
-y_dummy = torch.linspace(0, 25, steps=26)  # 26 character labels
+# X_dummy = torch.randn(26, 4, 4096)  # 100 samples of 4-channel EEG data
+# y_dummy = torch.linspace(0, 25, steps=26)  # 26 character labels
 
 # Create a DataLoader instance
-dataset = TensorDataset(X_dummy, y_dummy)
-dataloader = DataLoader(dataset, batch_size=4, shuffle=True)
+path = '/home/ensismoebius/Documentos/UNESP/doutorado/databases/Base de Datos Habla Imaginada/S01/S01_EEG.mat'
+eegDataset = EEGDataset(path)
+dataloader = DataLoader(eegDataset, batch_size=4, shuffle=True)
 
 net.start_train(dataloader, 200, 0.0001)
 net.save_model('test.pth')
 net.load_model('test.pth')
 
 # This selects the first sample and retains all channels, adding an extra dimension for the batch.
-print(torch.argmax(net(X_dummy[10].unsqueeze(0)), dim=1))
-
+# print(torch.argmax(net(X_dummy[10].unsqueeze(0)), dim=1))
