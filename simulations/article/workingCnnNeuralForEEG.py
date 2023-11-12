@@ -5,6 +5,8 @@ from data import EEGDataset
 from torch import nn, save, load
 from torch.utils.data import DataLoader, TensorDataset
 import numpy as np
+from sklearn.model_selection import train_test_split
+from torch.utils.data import DataLoader, SubsetRandomSampler
 
 import matplotlib.pyplot as plt
 
@@ -94,29 +96,93 @@ class EEGNet(nn.Module):
         return math.floor(input_size / poll_kernel_size)
 
 # Create the neural network
+test_size = 0.1
+batch_size = 10
+num_epochs = 100
 input_channels = 6  # number of EEG channels
 input_timepoints = 4096  # number of time points in each EEG sample
-net = EEGNet(input_channels, input_timepoints)
+# device = torch.device("cuda")
+# data_path='/content/drive/MyDrive/databases/S01_EEG.mat'
+device = torch.device("cpu")
+data_path='/home/ensismoebius/Documentos/UNESP/doutorado/databases/Base de Datos Habla Imaginada/S01/S01_EEG.mat'
+
+model = EEGNet(input_channels, input_timepoints)
+
+# Optmizer and loss function
+optimizer = torch.optim.Adam(model.parameters(), lr=2e-3, betas=(0.1, 0.999))
+loss_fn = nn.CrossEntropyLoss()
 
 # Ensures that the networks runs with floats
-net.float()
+model.float()
 
-# # Create a DataLoader instance
-path = '/home/ensismoebius/Documentos/UNESP/doutorado/databases/Base de Datos Habla Imaginada/S01/S01_EEG.mat'
-eegDataset = EEGDataset(path)
-dataloader = DataLoader(eegDataset, batch_size=4, shuffle=True)
+# Create DataLoaders
+eegDataset = EEGDataset(data_path)
 
-net.start_train(dataloader, 30, 0.0001)
-# net.save_model('test.pth')
-# net.load_model('test.pth')
+# Get the indices for the entire dataset
+dataset_size = len(eegDataset)
+indices = list(range(dataset_size))
+
+# Split the indices into training and validation sets
+train_indices, test_indices = train_test_split(indices, test_size=test_size, random_state=42, shuffle=True)
+
+# Create SubsetRandomSamplers for training and validation
+train_sampler = SubsetRandomSampler(train_indices)
+test_sampler = SubsetRandomSampler(test_indices)
+
+# Create DataLoaders using the SubsetRandomSamplers
+train_loader = DataLoader(eegDataset, batch_size=batch_size, sampler=train_sampler)
+test_loader = DataLoader(eegDataset, batch_size=batch_size, sampler=test_sampler)
 
 
-# This selects the first sample and retains all channels, adding an extra dimension for the batch.
-sample_data, sample_label = eegDataset.__getitem__(8)
-input_data = sample_data.unsqueeze(0)  # Adds one dimension
-output = net(input_data)
+# Loss and accuracy history
+min_loss_hist = [] # record loss over iterations 
 
-label = sample_label.item()
-resul = torch.argmax(output).item()
+# Keeps the minimum loss
+minLoss = 1000000
 
-print('Input: %s, Result: %s' %(eegDataset.estimuli[label], eegDataset.estimuli[resul]))
+# Keeps the maximum loss
+maxLoss = 0
+
+# Training loop
+for epoch in range(num_epochs):
+    
+    # Retrieve batch
+    trainning_batch = iter(train_loader)
+    iteration = 0;
+    
+    for data, targets in trainning_batch:
+        
+        # More one iteration
+        iteration += 1
+        
+        # Get data and labels
+        data = data.to(device)
+        targets = targets.to(device)
+
+        # forward-pass
+        model.train() # Enable tranning mode on model
+        spk_rec = model(data) # The forward pass itself
+        
+        loss_val = torch.zeros(1, dtype=torch.float, device=device)
+        loss_val += loss_fn(spk_rec.sum(1).squeeze(), targets)
+        
+        # Gradient calculation + weight update
+        optimizer.zero_grad() # null gradients
+        loss_val.backward() # calculate gradients
+        optimizer.step() # update weights
+        
+        # Keeps track of the max and min loss
+        if maxLoss < loss_val.item() :
+            maxLoss = loss_val.item()
+        if minLoss > loss_val.item() :
+            minLoss = loss_val.item()
+            min_loss_hist.append(minLoss) # store loss
+
+        # print every 10 iterations
+        if iteration % 2 == 0:
+            print(f"Epoch {epoch}, Iteration {iteration} \nTrain max/min loss: {maxLoss:.2f}/{minLoss:.2f}")
+
+    plt.plot(min_loss_hist)
+
+# model.save_model('test.pth')
+# model.load_model('test.pth')
