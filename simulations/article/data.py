@@ -48,6 +48,9 @@ class EEGDataset(Dataset):
 
         self.dataframe = pd.DataFrame(mat['EEG'])
 
+        # Creates 6 channels of EEG data
+        self.channels = 6
+        self.channelsLength = 4096
         self._joinIntoArray(0, 4096, 'F3', self.dataframe)
         self._joinIntoArray(0, 4096, 'F4', self.dataframe)
         self._joinIntoArray(0, 4096, 'C3', self.dataframe)
@@ -55,6 +58,9 @@ class EEGDataset(Dataset):
         self._joinIntoArray(0, 4096, 'P3', self.dataframe)
         self._joinIntoArray(0, 4096, 'P4', self.dataframe)
         
+        # Creates 3 more channels:
+        # labels 'Estímulo'
+        # artifacts 'Modalidade' and 'Artefatos'
         self._joinIntoValue(0, 1, 'Modalidade', self.dataframe)
         self._joinIntoValue(0, 1, 'Estímulo', self.dataframe)
         self._joinIntoValue(0, 1, 'Artefatos', self.dataframe)
