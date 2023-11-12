@@ -106,9 +106,9 @@ path = '/home/ensismoebius/Documentos/UNESP/doutorado/databases/Base de Datos Ha
 eegDataset = EEGDataset(path)
 dataloader = DataLoader(eegDataset, batch_size=4, shuffle=True)
 
-# net.start_train(dataloader, 30, 0.0001)
+net.start_train(dataloader, 30, 0.0001)
 # net.save_model('test.pth')
-net.load_model('test.pth')
+# net.load_model('test.pth')
 
 
 # This selects the first sample and retains all channels, adding an extra dimension for the batch.
