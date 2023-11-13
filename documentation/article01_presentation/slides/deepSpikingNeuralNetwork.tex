@@ -201,7 +201,7 @@
 
 \section{Experiments}
 \begin{frame}
-	\frametitle{Experiment: CNN and SNNs}
+	\frametitle{Experiment: Architecture}
 	\begin{columns}
 		\column{.2\textwidth}
 			\par The experiments objective is to compare a convolutional neural network (CNN) with an SNN.
@@ -228,32 +228,83 @@
 		}
 	\end{columns}
 \end{frame}
+
 \begin{frame}
-	\frametitle{Experiment: Database}
+	\frametitle{Experiment: Architecture}
+	\framesubtitle{Code architecture}
+	\par The code can be found at \href{https://github.com/ensismoebius/deepLearnning/tree/main/simulations/article}{simulations/article} folder in Google collab notebook format or in pure Python.
 	\begin{columns}
-		\column{.2\textwidth}
-		\par The experiments objective is to compare a convolutional neural network (CNN) with an SNN.
-		\par The chosen architecture was the following:
-		\column{.8\textwidth}
-		
-		\only<1>{
-			\framesubtitle{CNN architecture}
-			\begin{figure}
-				\centering
-				\includegraphics[width=\linewidth]{images/architectureCNN}
-				\caption{Convolutional neural network architecture}
-				\label{fig:architecturecnn}
-			\end{figure}
-		}
-		\only<2>{
-			\framesubtitle{SNN architecture}
-			\begin{figure}
-				\centering
-				\includegraphics[width=.85\linewidth]{images/architectureSNN}
-				\caption{Spiking neural network architecture}
-				\label{fig:architecturesnn}
-			\end{figure}
-		}
+		\begin{column}{0.5\textwidth}
+			\par The SNN and CNN was trained according to the following parameters:
+			\begin{itemize}
+				\item \textbf{batch size}: 10
+				\item \textbf{number of epochs}: 100
+			\end{itemize}
+			
+			\par Some parameters are exclusive to SNNs like:
+			
+			\begin{itemize}
+				\item \textbf{insist}: 4 (amount of times the same data is presented to the network)
+				\item \textbf{neuron decay rate}: 0.9 (the rate LIF neuron loses its voltage)
+			\end{itemize}	
+		\end{column}
+		\begin{column}{0.5\textwidth}
+			\only<1>{
+				\input{listings/cnnArchitecture.py}
+			}
+			\only<2>{
+				\input{listings/snnArchitecture.py}
+			}
+		\end{column}
 	\end{columns}
 \end{frame}
 
+\begin{frame}[allowframebreaks]
+	\frametitle{Experiment: Database}
+   	\begin{columns}
+    	\begin{column}{0.5\textwidth}
+			\par The used  database \cite{PRG16} can be found at \href{https://sinc.unl.edu.ar/grants/brain-computer-interfaces/}{https://sinc.unl.edu.ar/grants/brain-computer-interfaces} and consists in a set of EEG data recorded with 6 electrodes during a imagined speech of the words in spanish: 
+		    "A", "E", "I", "O", "U", "Arriba", "Abajo", "Adelante", "Atrás", "Derecha", "Izquierda".\newline
+		    
+		    \par Each channel captured 4096 samples and has the following ids: 'F3','F4', 'C3', 'C4', 'P3', 'P4' according to 10-20 system \cite{ScienceOpenVid:5960cfa8-7fde-441c-8592-35fdb9841499}.
+    	\end{column}
+    	\begin{column}{0.5\textwidth}
+    		\begin{figure}
+    			\centering
+    			\includegraphics[width=\linewidth]{images/sistema10-20}
+    			\caption{10-20 system. Source: \cite{sistema10-20}}
+    			\label{fig:sistema10-20}
+    		\end{figure}
+    	\end{column}
+    \end{columns}
+
+	\begin{figure}
+		\centering
+		\includegraphics[width=\linewidth]{images/dataBaseSample}
+		\caption{Sample of data from database}
+		\label{fig:databasesample}
+	\end{figure}
+\end{frame}
+
+\begin{frame}
+	\frametitle{Experiment: Results}
+	\begin{columns}
+		\begin{column}{0.5\textwidth}
+			\begin{figure}
+				\centering
+				\includegraphics[width=\linewidth]{images/cnnResults}
+				\caption[CNN Results]{CNN Results. The horizontal axis represents iterations, vertical the loss }
+				\label{fig:cnnresults}
+			\end{figure}
+			
+		\end{column}
+		\begin{column}{0.5\textwidth}
+			\begin{figure}
+				\centering
+				\includegraphics[width=\linewidth]{images/snnResults}
+				\caption[SNN Results]{SNN Results. The horizontal axis represents iterations, vertical the loss }
+				\label{fig:snnresults}
+			\end{figure}
+		\end{column}
+	\end{columns}
+\end{frame}
