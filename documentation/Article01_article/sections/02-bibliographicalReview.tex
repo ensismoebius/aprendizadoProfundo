@@ -1,0 +1,238 @@
+\section{Short Review Notes}
+	\label{sec:revBibli}
+	
+	\subsection{Brain-Computer Interface and EEG}
+		\par Among the methods of Brain-Computer Interface (BCI), Electroencephalogram (EEG) stands out as the most cost-effective and simple system to implement. However, it does have some quirks, such as high sensitivity to electromagnetic interference and difficulty in capturing the signal due to suboptimal scalp placement of the electrodes. So one of the fundamental aspect that any EEG processing system must have is the tolerance to noise \cite{JALALYBIDGOLY2020101788}.
+		
+		\par The \textit{wet} electrodes are placed using conductive gel and are less prone to movement artifacts which are electromagnetic interferences caused by some motion like blinking. \textit{Dry} electrodes does not need the gel but is more sensible to artifacts.
+		
+		\par EEG records the electrical activities of the brain, typically placing along the scalp surface electrodes. These electrical activities result from ionic current flows induced by the synchronized synaptic activation of the brain's neurons. They manifest as rhythmic voltage fluctuations ranging from 5 to 100$\mu V$ in amplitude and between 0.5 and 40 Hz in frequency\cite{JALALYBIDGOLY2020101788}.
+
+		\par The operational frequencies bands in the brain are following \cite{sanei2021eeg}:
+		
+		\begin{itemize}
+			\item \textbf{Delta (1–4Hz)}: The slowest and usually the highest amplitude waveform. The Delta band is observed in babies and during deep sleep in adults.
+			
+			\item \textbf{Theta (4–8Hz)}: Observed in children, drowsy adults, and during memory recall. Theta wave amplitude is typically less than 100$\mu V$.
+			
+			\item \textbf{Alpha (8–12Hz)}: Usually the dominant frequency band, appearing during relaxed awareness or when eyes are closed. Focused attention or relaxation with open eyes reduces the amplitude of the Alpha band. These waves are normally less than 50 $\mu V$.
+			
+			\item \textbf{Beta (12–25Hz)}: Associated with thinking, active concentration, and focused attention. Beta wave amplitude is normally less than 30 $\mu V$.
+			
+			\item \textbf{Gamma (over 25Hz)}: Observed during multiple sensory processing. Gamma patterns have the lowest amplitude.
+		\end{itemize}
+
+		\par According to \cite{JALALYBIDGOLY2020101788}, for most of the tasks brain do, there is regions associated with it. These ones are described in Table \ref{tb:brainRegions}.
+	
+		\begin{table}[H]
+			\begin{center}
+				\caption{Brain tasks and its corresponding regions. See Figure \ref{fig:1020standardandlobes} for more information.}
+				\begin{tabular}{|c|c|p{0.4\textwidth}|}
+					\hline
+					Region & Channels & Tasks\\
+					\hline
+					Frontal lobe & Fp1, Fp2, Fpz, Pz, F3, F7, F4, F8 & Memory, concentration, emotions.\\
+					\hline
+					Parietal lobe& P3, P4, Pz & Problem Solving, attention, grammar, sense of touch. \\
+					\hline
+					Temporal lobe& T3, T5, T4, T6 & Memory, recognition of faces, hearing, word and social clues. \\
+					\hline
+					Occipital lobe & O1, O2, Oz & Reading, vision.\\
+					\hline
+					Cerebellum && Motor control, balance. \\
+					\hline
+					Sensorimotor Cortex & C3, C4, Cz& Attention, mental processing, ﬁne motor control, sensory integration. \\
+					\hline
+				\end{tabular}
+				\label{tb:brainRegions}
+			\end{center}
+		\end{table}
+	
+		\begin{figure}[h]
+			\centering
+			\includegraphics[width=0.5\linewidth]{images/10–20StandardAndLobes}
+			\caption[10-20 standard and brain lobes]{Electrodes placement according to 10-20 standard \cite{sistema10-20} and brain's lobes. Odd numbers are assigned to the electrodes on the left hemisphere, and even numbers are assigned to the electrodes on the right. Source \cite{JALALYBIDGOLY2020101788}}
+			\label{fig:1020standardandlobes}
+		\end{figure}
+	
+	\subsection{Spiking Neural Networks}
+	
+		\par Neural Networks (NNs), as defined here as \textit{a multilayered, fully connected, with or without recurrent or convolutional layers network}, require that all neurons are activated in both the forward and backward passes. This implies that every unit in the network must process some data, leading to power consumption \textbf{CITATION HERE}. 
+
+		\par The sensory system of biological neurological systems converts external data, such as light, odors, touch, flavors, and others, into \textbf{spikes}. A spike is a voltage that convey information \cite{kasabov2019time}. These ones are then transmitted along the neuronal chain to be processed, generating a response to the environment.
+		
+		\par The biological neuron only spikes when a certain level of excitatory signals get accumulated above some threshold in its soma staying inactive when there is no signal, therefore, this type of cell is very efficient in terms of energy consumption and processing.
+		
+		\par In order to get the aforementioned advantages the Spiking Neural Networks (SNNs) instead of employing continuous activation values, like NNs, SNNs utilize \textbf{spikes} at the input, hidden and outputs layers. SNNs can have continuous inputs as well and keep its properties.
+		
+		
+		\par An SNN \textbf{is not} a one-to-one simulation of neurons. Instead, it approximates certain computational capabilities of specific biological properties. Some studies like \cite{jones2020single} created models way closer to natural neurons exploring the nonlinearity of dendrites and another neuron features yielding remarkable results in the classification.
+		
+		\par As can be seen in Figure \ref{fig:neuronspike} SNNs neurons, given the correct parameters, are very noise tolerant. Generating spikes even when a considerably level of interference is present. This units are very time-oriented too, being great when it comes to process streams of data \textbf{CITATION HERE}.
+		
+		\begin{figure}[H]
+			\centering
+			\includegraphics[width=.6\linewidth]{images/neuronSpikes}
+			\caption{Spikes from a noisy signal. Source \cite{dan_goodman_2022_7044500}}
+			\label{fig:neuronspike}
+		\end{figure} 
+
+	\subsection{Spiking Neuron}
+		\par Although this work focus in just \textit{Leaky Integrate and Fire Neurons} (LIF) because is simpler, more efficient and currently generalize better for most of the problems \cite{dan_goodman_2022_7044500}, there is one interesting enough, because it paves the way to another ones, that worth to mention:
+	
+		\subsubsection{Hodgkin-Huxley neuron}
+			\par The Hodgkin-Huxley neuron \cite{gerstner2014neuronal} was modeled conducting experiments on a giant axon of a squid and identified three distinct types of ion currents: $Na^+$ (sodium), $K^+$ (Potassium), and a leak current primarily composed of $Cl^-$ (chloride) ions.
+			\par Like can be seen in Figure \ref{fig:hodgkin-huxleymodel} this neuron is modeled as conjunction of a resistor $R$, potentiometers $R_{Na}, R_{K}$ and a capacitor $C$ along with  batteries (ion concentrators) $E_L, E_{Na}, E_K$  in which an current $I$ is injected. The potentiometers indicate the channels of $Na^+$ and $K^+$ which can ben opened or closed, the batteries represents Nernst potential \cite{2023Gibbs} for each channel.
+			
+			\begin{figure}[H]
+				\centering
+				\includegraphics[width=0.7\linewidth]{images/Hodgkin-HuxleyModel}
+				\caption{Schematic diagram for the Hodgkin-Huxley model. Source: \cite{gerstner2014neuronal}}
+				\label{fig:hodgkin-huxleymodel}
+			\end{figure}
+			
+			\par Given that:
+			\begin{itemize}
+				\item $C_m$ is the membrane capacitance that represents the ability of the neuronal membrane to store charge.
+				\item $g_{Na}$ is the sodium conductance that describes its fast opening permeability.
+				\item $g_K$ is the potassium conductance that describes its slow opening permeability.
+				\item $g_{leak}$ is the background conductance that describes ion movements not related to $Na^+$ or $K^+$ channels.
+				\item $V$ is the membrane potential.
+				\item $I$ is the injected current.
+				\item $m, h$, and $n$ are dimensionless gating variables representing the probability that the sodium and potassium channels are open.
+				\item $\alpha$ and $\beta$ are voltage-dependent rate constants.
+			\end{itemize}
+		
+			\par Than the neuron's behavior is ruled by the Equations \ref{eq:Hodgkin-HuxleyNeuronEq1}, \ref{eq:Hodgkin-HuxleyNeuronEq2}, \ref{eq:Hodgkin-HuxleyNeuronEq3}, \ref{eq:Hodgkin-HuxleyNeuronEq4} and Listings \ref{lst:hodgkin-huxleymodelLst1}, \ref{lst:hodgkin-huxleymodelLst02-04}, \ref{lst:hodgkin-huxleymodelHelper}.\newline
+			
+			\par The equation \ref{eq:Hodgkin-HuxleyNeuronEq1} models how rate of change $\frac{dV}{dt}$ of membrane potential ($V$) is determined by the injected current ($I$) and the currents through $Na^+$, $K^+$, and $g_{leaky}$ channels.
+			\begin{equation}
+				\label{eq:Hodgkin-HuxleyNeuronEq1}
+				\frac{dV}{dt} = \dfrac{I - g_{\text{Na}}m^3h(V - E_{\text{Na}}) - g_{\text{K}}n^4(V - E_{\text{K}}) - g_{\text{leak}}(V - E_{\text{leak}})}{C_m}
+			\end{equation}
+			\input{listings/hodkinEquation01.py}
+	
+			\par Equations \ref{eq:Hodgkin-HuxleyNeuronEq2}, \ref{eq:Hodgkin-HuxleyNeuronEq3}, \ref{eq:Hodgkin-HuxleyNeuronEq4} are the rate of change of the gating variables $m, h$, and $n$, which represent the probability that the $Na^+$ and $K^+$ channels are open.		
+			\begin{equation}
+				\label{eq:Hodgkin-HuxleyNeuronEq2}
+				\frac{dm}{dt} = \alpha_m (1 - m) - \beta_m m
+			\end{equation}
+		
+			\begin{equation}
+				\label{eq:Hodgkin-HuxleyNeuronEq3}
+				\frac{dh}{dt} = \alpha_h (1 - h) - \beta_h h
+			\end{equation}
+		
+			\begin{equation}
+				\label{eq:Hodgkin-HuxleyNeuronEq4}
+				\frac{dn}{dt} = \alpha_n (1 - n) - \beta_n n
+			\end{equation}
+			\input{listings/hodkinEquation02-04.py}
+			
+			\par Next are the helper functions representing the $\alpha$ and $\beta$. They are used to calculate the rate constants for the gating variables in the differential equations.	
+			\begin{equation}
+				\alpha_m(V) = 0.1 \frac{V + 40.0}{1.0 - \exp\left(-\frac{V + 40.0}{10.0}\right)}
+			\end{equation}
+		
+			\begin{equation}
+				\beta_m(V) = 4.0 \exp\left(-\frac{V + 65.0}{18.0}\right)
+			\end{equation}
+		
+			\begin{equation}
+				\alpha_h(V) = 0.07 \exp\left(-\frac{V + 65.0}{20.0}\right)
+			\end{equation}
+		
+			\begin{equation}
+				\beta_h(V) = \frac{1.0}{1.0 + \exp\left(-\frac{V + 35.0}{10.0}\right)}
+			\end{equation}
+		
+			\begin{equation}
+				\alpha_n(V) = 0.01 \frac{V + 55.0}{1.0 - \exp\left(-\frac{V + 55.0}{10.0}\right)}
+			\end{equation}
+	
+			\begin{equation}
+				\beta_n(V) = 0.125 \exp\left(-\frac{V + 65.0}{80.0}\right)
+			\end{equation}
+			\input{listings/hodkinHelperFunctions.py}
+			
+			\begin{figure}[H]
+				\centering
+				\includegraphics[width=0.7\linewidth]{images/hodkinHuxleyNeuronBehavior}
+				\caption[Hodgkin-Huxley neuron behavior]{Hodgkin-Huxley neuron behavior under constant input current. Source: The author}
+				\label{fig:hodkinhuxleyneuronbehavior}
+			\end{figure}
+			
+			\par And finally the full code that plots the Figure \ref{fig:hodkinhuxleyneuronbehavior} which shows the neuron behavior:
+			\input{listings/hodkinHuxleyNeuron.py}
+			
+
+		\subsubsection{Leaky Integrate and Fire Neuron}
+			\par The Leaky Integrate and Fire Neuron (LIF) is one of the simplest neuron models in SNNs, still, it can applied successfully to most of the problems in with SNNs can be used.
+			\par LIF, like a NN neuron takes the sum of weighted inputs but, rather than pass it directly to its activation function, some \textit{leakage} is applied which descreases in some degree the sum. LIF behave much like Resistor-Capacitor circuits as can be seen in Figure \ref{fig:rcmodel}.
+			
+			\begin{figure}
+				\centering
+				\includegraphics[width=0.3\linewidth]{images/rcmodel}
+				\caption[The RC model]{RC model: $R$ is resistance to the leakage, $I_{in}$ the input current, $C$ the capacitance, $U_{mem}$ means the accumulated action potential and $v$ is a switch that lets the capacitor discharge (i.e. emit a spike) when some potential threshold is reached. Source: \cite{10242251}}
+				\label{fig:rcmodel}
+			\end{figure}
+			
+			\par Unlike the Hodgkin-Huxley neuron, spikes are represented as \textbf{sparsely} distributed \textbf{ones} in a train of \textbf{zeros}, as illustrated in Figure \ref{fig:spikessparsitystaticsupress} and \ref{fig:sparsity}. This approach simplify the models and reduces the computational power and needed storage to run an SNN.
+			
+			\begin{figure}[H]
+				\centering
+				\includegraphics[width=0.6\linewidth]{images/spikesSparsityStaticSupress}
+				\caption{Sparsity on Spike Neuron Networks. Source: \cite{10242251}}
+				\label{fig:spikessparsitystaticsupress}
+			\end{figure}
+			
+			\begin{figure}[H]
+				\centering
+				\includegraphics[width=.8\linewidth]{images/sparsity}
+				\caption[Sparse activity of a SNN]{Sparse activity of a SNN: The horizontal axis represents the time step of some data being processed the vertical are the SNN neuron number. Note that, most of the time, very few neurons gets activated. Source: The author.}
+				\label{fig:sparsity}
+			\end{figure}
+				
+			\par As result of the mentioned above, in SNN information is coded in format of \textit{timing} and/or \textit{rate} of spikes giving consequently great capabilities of processing streams of data but limiting the processing of static data.
+			
+			\par LIF model is governed by the Equations.
+			
+			\begin{equation}
+				C \frac{dV}{dt} = \frac{(E_{rest} - V + R . I_{syn} + R . I_{\text{leak}})}{\tau_m}
+			\end{equation}
+		
+			\begin{equation}
+				V(t+\Delta t) = V(t) + \Delta t . \frac{dV}{dt}
+			\end{equation}
+		
+			\begin{equation}
+				C \frac{dV}{dt} = \frac{(\text{terms as shown})}{\tau_m}
+			\end{equation}
+		
+		
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+
+
+
+

@@ -2,7 +2,7 @@
 \begin{frame}[allowframebreaks]
 	\frametitle{Introduction}
 	
-	\par The databse and sources used in this work are available in \url{https://github.com/ensismoebius/deepLearnning}):\newline
+	\par The database and sources used in this work are available in \url{https://github.com/ensismoebius/deepLearnning}):\newline
 	
 	\par Spiking Neural Networks (SNNs) mimic in some degree the workings of the brain by utilizing action potentials, in contrast to continuous values transmitted between neurons in more traditional neural networks.\newline
 	
@@ -132,7 +132,7 @@
 \end{frame}
 
 \begin{frame}
-	\frametitle{Theory: Training overview}
+	\frametitle{Concepts: Training overview}
 	\par As shown in Figure \ref{fig:neuronspikes2}, when a neuron reaches a certain threshold, it resets ($V = 0$). Note that $V=0$ is just one of the possible values of reset, after this the neuron may or may not enter in a refractory period. \textbf{These, an another values cited ahead, can be parameterized or learned}.\newline
 	
 	\par \textbf{How do SNNs get trained?} Well, this is still an open question. An SNN neuron has an activation-function behavior that is more relatable to a \textbf{step function}. Therefore, in principle, we can't use gradient descent-based solutions because this kind of function \textbf{is not} differentiable \cite{kasabov2019time}.\newline
@@ -142,7 +142,7 @@
 \end{frame}
 
 \begin{frame}
-	\frametitle{Theory: Training overview}
+	\frametitle{Concepts: Training overview}
 	\begin{itemize}
 		\item Spike Timing-Dependent Plasticity (STDP): The idea is that if a pre-synaptic neuron fires \textbf{before} the post-synaptic one, there is a strengthening in connection, but if the post-synaptic neuron fires before, then there is a weakening.
 		\item Surrogate Gradient Descent: The technique \textbf{approximates} the step function by using another mathematical function, which is differentiable (like a sigmoid), in order to train the network. These approximations are used only \textbf{in the backward pass}, while keeping the step function in the forward pass \cite{kasabov2019time}.
@@ -152,7 +152,7 @@
 \end{frame}
 
 \begin{frame}
-	\frametitle{Theory: Surrogate gradient descent}
+	\frametitle{Concepts: Surrogate gradient descent}
 		\begin{columns}
 		\column{0.5\textwidth}
 			\par Gradient descent is a well known method to adjust the weights of a network, however it can't be used \textbf{directly} in SNNs because its behavior on activation obeys a \textbf{Heaviside function} which is not differentiable and its gradients are all zero.\newline
@@ -171,7 +171,7 @@
 \end{frame}
 
 \begin{frame}[allowframebreaks]
-	\frametitle{Theory: Coding}
+	\frametitle{Concepts: Coding}
 	\begin{columns}
 		\column{0.3\textwidth}
 			\par Despite SNNs can work in conjunction with another types of layers in deep networks they are made to exploit data that varies in time (audio, videos etc.) then, sometimes we need to make some static data be presented in time-varying fashion.\newline
