@@ -30,22 +30,20 @@ def plot_potentials_and_spikes(time, membrane_potential, spikes, threshold):
     axs[1].eventplot(spikes, color='black', linewidths=2)
     axs[1].set_title('Spikes')
     axs[1].set_xlabel('Time (ms)')
-    axs[1].set_ylabel('Spike')
-
     plt.tight_layout()
     plt.show()
 
 # Parameters
-membrane_time_constant = 20  # Membrane time constant (ms)
-membrane_resistance = 1    # Membrane resistance
-resting_potential = 0  # Resting membrane potential
-threshold = 10  # Membrane potential threshold for firing
-time_step = 1  # Time step (ms)
-duration = 1000  # Simulation duration (ms)
+membrane_time_constant = 80  # Membrane time constant in ms (τ tau)
+membrane_resistance = 1.0    # Membrane resistance
+resting_potential = -2.0  # Resting membrane potential
+threshold = 10.0  # Membrane potential threshold for firing
+time_step = 1.0  # Time step (ms)
+duration = 1000.0  # Simulation duration (ms)
 input_current = np.zeros(int(duration / time_step))  # Input current (zero for simplicity)
 
 # Set input current to non-zero values to observe different behavior
-input_current[300:400] = 15.0  # Example: Injecting a current for a brief period
+input_current[300:800] = 15.0  # Example: Injecting a current for a brief period
 
 time, membrane_potential, spikes = lif_neuron(membrane_time_constant, membrane_resistance, resting_potential, threshold, input_current, time_step, duration)
 plot_potentials_and_spikes(time, membrane_potential, spikes, threshold)
