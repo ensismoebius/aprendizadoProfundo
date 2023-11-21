@@ -1,22 +1,41 @@
 import matplotlib.pyplot as plt
 import numpy as np
 
-def lif_neuron(membrane_time_constant, membrane_resistance, resting_potential, threshold, input_current, time_step, duration):
-    num_steps = int(duration / time_step)
-    time = np.arange(0, duration, time_step)
-
+def lif_neuron(
+    tau, # membrane time constant 
+    R, # membrane resistance
+    V_rest, # resting potential 
+    V_thresh, # potential threshold
+    I_in, # input current
+    dt, # time step 
+    duration
+    ):
+    
+    # Auxiliary variables
     spikes = []
-    membrane_potential = resting_potential * np.ones(num_steps)
+    num_steps = int(duration / dt)
+    time = np.arange(0, duration, dt)
+    
+    # membrane potentials
+    V_mem = V_rest * np.ones(num_steps)
 
+    # Here the LIF model actually begins
     for i in range(1, num_steps):
-        dV = (-membrane_potential[i - 1] + resting_potential + membrane_resistance * input_current[i - 1]) / membrane_time_constant * time_step
-        membrane_potential[i] = membrane_potential[i - 1] + dV
+        
+        
+        # def leaky_integrate_neuron(U, time_step=1e-3, I=0, R=5e7, C=1e-10):
+        #     tau = R*C
+        #     U = U + (time_step/tau)*(-U + I*R)
+        #     return U
+        
+        dV = (-V_mem[i - 1] + V_rest + R * I_in[i - 1]) / tau * dt
+        V_mem[i] = V_mem[i - 1] + dV
 
-        if membrane_potential[i] >= threshold:
+        if V_mem[i] >= V_thresh:
             spikes.append(i)
-            membrane_potential[i] = resting_potential  # Reset membrane potential after spike
+            V_mem[i] = V_rest  # Reset membrane potential after spike
 
-    return time, membrane_potential, spikes
+    return time, V_mem, spikes
 
 def plot_potentials_and_spikes(time, membrane_potential, spikes, threshold):
     fig, axs = plt.subplots(2, 1, sharex=True, figsize=(10, 6), gridspec_kw={'height_ratios': [3, 1]})
