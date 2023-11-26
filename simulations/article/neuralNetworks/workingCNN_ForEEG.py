@@ -6,6 +6,7 @@ from torch import nn, save, load
 from torch.utils.data import DataLoader, TensorDataset
 import numpy as np
 from sklearn.model_selection import train_test_split
+from sklearn.metrics import confusion_matrix
 from torch.utils.data import DataLoader, SubsetRandomSampler
 
 import matplotlib.pyplot as plt
@@ -69,15 +70,19 @@ test_size = 0.2
 batch_size = 10
 num_epochs = 100
 # device = torch.device("cuda")
-# data_path='/content/drive/MyDrive/databases/S01_EEG.mat'
 device = torch.device("cpu")
-data_path='S01_EEG.mat'
 
-# Create DataLoaders
+# Load and preprocess data
+# data_path='/content/drive/MyDrive/databases/S01_EEG.mat'
+data_path='/home/ensismoebius/Documentos/UNESP/doutorado/databases/Base de Datos Habla Imaginada/S01/S01_EEG.mat'
 eegDataset = EEGDataset(data_path)
 
 # Create model
 model = EEGNet(eegDataset.channels, eegDataset.channelsLength)
+
+# Set device
+# device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+device = "cpu"
 model.to(device)
 
 # Optmizer and loss function
@@ -105,53 +110,101 @@ test_loader = DataLoader(eegDataset, batch_size=batch_size, sampler=test_sampler
 
 # Loss and accuracy history
 min_loss_hist = [] # record loss over iterations 
+accuracy_hist = []  # record accuracy over iterations
 
 # Keeps the minimum loss
-minLoss = 1000000
+min_loss = 1000000
 
 # Keeps the maximum loss
-maxLoss = 0
+max_loss = 0
 
 # Training loop
 for epoch in range(num_epochs):
-    
-    # Retrieve batch
-    iteration = 0;
-    trainning_batch = iter(train_loader)
-    
-    for data, targets in trainning_batch:
-        
-        # More one iteration
-        iteration += 1
-        
-        # Get data and labels
-        data = data.to(device)
-        targets = targets.to(device)
+    # Initialize variables for computing accuracy and confusion matrix
+    correct_preds = 0
+    total_samples = 0
+    all_preds = []
+    all_labels = []
+
+    for data, targets in train_loader:
+        data, targets = data.to(device), targets.to(device)
 
         # forward-pass
-        model.train() # Enable tranning mode on model
-        spk_rec = model(data) # The forward pass itself
-        
+        model.train()
+        prediction = model(data)
+
         loss_val = torch.zeros(1, dtype=torch.float, device=device)
-        loss_val += loss_fn(spk_rec.sum(1).squeeze(), targets)
-        
+        loss_val += loss_fn(prediction.sum(1).squeeze(), targets)
+
         # Gradient calculation + weight update
-        optimizer.zero_grad() # null gradients
-        loss_val.backward() # calculate gradients
-        optimizer.step() # update weights
-        
+        optimizer.zero_grad()
+        loss_val.backward()
+        optimizer.step()
+
+        # Compute accuracy and update confusion matrix
+        _, predicted = torch.max(prediction.data, 1)
+        correct_preds += (predicted == targets).sum().item()
+        total_samples += targets.size(0)
+        all_preds.extend(predicted.cpu().numpy())
+        all_labels.extend(targets.cpu().numpy())
+
         # Keeps track of the max and min loss
-        if maxLoss < loss_val.item() :
-            maxLoss = loss_val.item()
-        if minLoss > loss_val.item() :
-            minLoss = loss_val.item()
-            min_loss_hist.append(minLoss) # store loss
+        if max_loss < loss_val.item():
+            max_loss = loss_val.item()
+        if min_loss > loss_val.item():
+            min_loss = loss_val.item()
 
-        # print every 10 iterations
-        if iteration % 2 == 0:
-            print(f"Epoch {epoch}, Iteration {iteration} \nTrain max/min loss: {maxLoss:.2f}/{minLoss:.2f}")
+    # Calculate accuracy and loss
+    accuracy = correct_preds / total_samples
+    avg_loss = loss_val.item() / len(train_loader)
 
-    plt.plot(min_loss_hist)
+    # Update history
+    accuracy_hist.append(accuracy)
+    min_loss_hist.append(avg_loss)
 
-model.save_model('cnn.pth')
-# model.load_model('test.pth')
+    # Print and store results every 10 epochs
+    if epoch % 10 == 0:
+        print(f"Epoch {epoch}, Train Accuracy: {accuracy:.2%}, Train Loss: {avg_loss:.4f}")
+
+# Plot average accuracy and loss
+plt.figure(figsize=(12, 4))
+plt.subplot(1, 2, 1)
+plt.plot(accuracy_hist, label='Accuracy')
+plt.title('Average Accuracy Over Epochs')
+plt.xlabel('Epoch')
+plt.ylabel('Accuracy')
+plt.legend()
+
+plt.subplot(1, 2, 2)
+plt.plot(min_loss_hist, label='Loss')
+plt.title('Average Loss Over Epochs')
+plt.xlabel('Epoch')
+plt.ylabel('Loss')
+plt.legend()
+
+plt.show()
+
+# Evaluate on the test set
+model.eval()
+all_test_preds = []
+all_test_labels = []
+
+with torch.no_grad():
+    for test_data, test_targets in test_loader:
+        test_data, test_targets = test_data.to(device), test_targets.to(device)
+        test_outputs = model(test_data)
+        _, test_preds = torch.max(test_outputs.data, 1)
+        all_test_preds.extend(test_preds.cpu().numpy())
+        all_test_labels.extend(test_targets.cpu().numpy())
+
+# Create confusion matrix
+conf_matrix = confusion_matrix(all_test_labels, all_test_preds)
+
+# Plot confusion matrix
+plt.figure(figsize=(8, 6))
+plt.imshow(conf_matrix, interpolation='nearest', cmap=plt.cm.Blues)
+plt.title('Confusion Matrix')
+plt.colorbar()
+plt.xlabel('Predicted Label')
+plt.ylabel('True Label')
+plt.show()

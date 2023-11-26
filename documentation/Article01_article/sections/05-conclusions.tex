@@ -1,2 +1,20 @@
 \section{Conclusions}
 \label{sec:conclusions}
+			\par Until now the model of a decaying membrane potential is interesting but does not explains how an spike neuron can be used and modeled in a network. Using the Equation \ref{eq:finalMem} which describes an RC model it is possible to create such thing.
+
+\par As aforementioned starting with the Equation \ref{eq:finalMem} and using Forward Euler Method to solve the LIF model:
+
+\begin{equation}
+	\tau.\dfrac{dV_{mem}(t)}{dt} = R.I_{in}(t) - V_{mem}(t)
+\end{equation}
+
+\par Solving the derivate in Equation \ref{eq:membraneDerivative} results in the membrane potential for any time $t+\Delta t$ in future:
+
+\begin{equation}
+	\label{eq:membraneDerivative}
+	\begin{aligned}
+		\tau.\dfrac{V_{mem}(t+\Delta t) - V_{mem}(t)}{\Delta t} &= R.I_{in}(t) - V_{mem}(t) = \\
+		V_{mem}(t+\Delta t) - V_{mem}(t) &= \frac{\Delta t}{\tau} . (R.I_{in}(t) - V_{mem}(t)) = \\
+		\Aboxed{V_{mem}(t+\Delta t) &= V_{mem}(t) + \frac{\Delta t}{\tau} . (R.I_{in}(t) - V_{mem}(t))}
+	\end{aligned}
+\end{equation}

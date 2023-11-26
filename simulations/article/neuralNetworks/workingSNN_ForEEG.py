@@ -63,9 +63,9 @@ class SNNModel(nn.Module):
         return torch.stack(spk2_rec, dim=0), torch.stack(mem2_rec, dim=0)
 # Configuration section
 insist = 4
-test_size = 0.2
+test_size = 0.4
 batch_size = 10
-num_epochs = 100
+num_epochs = 3000
 neuronDecayRate = 0.9
 # device = torch.device("cuda")
 # data_path='/content/drive/MyDrive/databases/S01_EEG.mat'
@@ -107,7 +107,7 @@ model.float()
 utils.reset(model)
 
 # Optmizer and loss function
-optimizer = torch.optim.Adam(model.parameters(), lr=2e-3, betas=(0.1, 0.999))
+optimizer = torch.optim.Adam(model.parameters(), lr=2e-4, betas=(0.00001, 0.999))
 loss_fn = nn.CrossEntropyLoss()
 
 # Loss and accuracy history

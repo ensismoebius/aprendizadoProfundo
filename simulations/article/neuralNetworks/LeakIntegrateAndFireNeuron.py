@@ -1,68 +1,70 @@
-import matplotlib.pyplot as plt
 import numpy as np
+import matplotlib.pyplot as plt
 
-def lif_neuron(
-    tau, # membrane time constant 
-    R, # membrane resistance
-    V_rest, # resting potential 
-    V_thresh, # potential threshold
-    I_in, # input current
-    dt, # time step 
-    duration
-    ):
-    
-    # Auxiliary variables
-    spikes = []
-    num_steps = int(duration / dt)
-    time = np.arange(0, duration, dt)
-    
-    # membrane potentials
-    V_mem = V_rest * np.ones(num_steps)
+class LIFNeuron:
+    def __init__(self, tau, v_rest, v_th, v_reset, r):
+        self.tau = tau          # Membrane time constant
+        self.v_rest = v_rest    # Resting potential
+        self.v_th = v_th        # Threshold potential
+        self.v_reset = v_reset  # Reset potential
+        self.r = r              # Membrane resistance
+        self.v = v_rest         # Initial membrane potential
+        self.spike_times = []   # To store spike times
+        self.mem_potentials = []# To store membrane potentials
 
-    # Here the LIF model actually begins
-    for i in range(1, num_steps):
+    def update(self, i, dt):
+        # LIF neuron dynamics update using Euler's method
+        dv = (-(self.v - self.v_rest) + self.r * i) / self.tau * dt
+        self.v += dv
+
+        # Check for spike condition
+        if self.v >= self.v_th:
+            self.spike_times.append(i)
+            self.v = self.v_reset  # Reset membrane potential after spike
         
-        
-        # def leaky_integrate_neuron(U, time_step=1e-3, I=0, R=5e7, C=1e-10):
-        #     tau = R*C
-        #     U = U + (time_step/tau)*(-U + I*R)
-        #     return U
-        
-        dV = (-V_mem[i - 1] + V_rest + R * I_in[i - 1]) / tau * dt
-        V_mem[i] = V_mem[i - 1] + dV
+        self.mem_potentials.append(self.v)
 
-        if V_mem[i] >= V_thresh:
-            spikes.append(i)
-            V_mem[i] = V_rest  # Reset membrane potential after spike
-
-    return time, V_mem, spikes
-
-def plot_potentials_and_spikes(time, membrane_potential, spikes, threshold):
-    fig, axs = plt.subplots(2, 1, sharex=True, figsize=(10, 6), gridspec_kw={'height_ratios': [3, 1]})
+def simulate_lif_neuron(current_input, simulation_time, dt, tau, v_rest, v_th, v_reset, r):
+    neuron = LIFNeuron(tau, v_rest, v_th, v_reset, r)
     
-    axs[0].plot(time, membrane_potential, label='Membrane Potential')
-    axs[0].axhline(y=threshold, color='r', linestyle='--', label='Threshold')
-    axs[0].set_title('LIF Neuron Membrane Potential')
-    axs[0].set_ylabel('Membrane Potential')
-    axs[0].legend()
+    # Simulation loop
+    for i in np.arange(0, simulation_time, dt):
+        neuron.update(i, dt)
+    
+    return neuron
 
-    axs[1].eventplot(spikes, color='black', linewidths=2)
-    axs[1].set_title('Spikes')
-    axs[1].set_xlabel('Time (ms)')
-    plt.tight_layout()
-    plt.show()
+# Simulation parameters
+simulation_time = 40    # in milliseconds
+dt = 0.1                 # time step
+tau = 10.0               # membrane time constant (ms)
+v_rest = -70.0           # resting potential (mV)
+v_th = -50.0             # threshold potential (mV)
+v_reset = v_rest         # reset potential (mV)
+r = 10.0                 # membrane resistance (Ohms)
 
-# Parameters
-membrane_time_constant = 80  # Membrane time constant in ms (τ tau)
-membrane_resistance = 1.0    # Membrane resistance
-resting_potential = -2.0  # Resting membrane potential
-threshold = 10.0  # Membrane potential threshold for firing
-time_step = 1.0  # Time step (ms)
-duration = 1000.0  # Simulation duration (ms)
-input_current = np.zeros(int(duration / time_step))  # Input current (zero for simplicity)
+# Input current: step function for demonstration
+current_input = np.zeros(int(simulation_time/dt))
+current_input[int(20/dt):int(80/dt)] = 1.0  # input current pulse
 
-# Set input current to non-zero values to observe different behavior
-input_current[300:800] = 15.0  # Example: Injecting a current for a brief period
+# Run simulation
+neuron = simulate_lif_neuron(current_input, simulation_time, dt, tau, v_rest, v_th, v_reset, r)
 
-time, membrane_potential, spikes = lif_neuron(membrane_time_constant, membrane_resistance, resting_potential, threshold, input_current, time_step, duration)
-plot_potentials_and_spikes(time, membrane_potential, spikes, threshold)
+# Plotting the membrane potential and input current over time
+plt.figure(figsize=(10, 6))
+
+plt.subplot(2, 1, 1)
+plt.plot(np.arange(0, simulation_time, dt), neuron.mem_potentials, 'b-', label='Membrane Potential')
+plt.plot([0, simulation_time], [v_th, v_th], 'k--', label='Threshold')
+plt.plot([0, simulation_time], [v_rest, v_rest], 'k-', label='Resting Potential')
+plt.plot([0, simulation_time], [v_reset, v_reset], 'k-.', label='Reset Potential')
+plt.ylabel('Membrane Potential (mV)')
+plt.title('LIF Neuron Simulation')
+plt.legend()
+
+plt.subplot(2, 1, 2)
+plt.plot(neuron.spike_times, np.ones_like(neuron.spike_times), 'r|', label='Spike')
+plt.xlabel('Time (ms)')
+plt.legend()
+
+plt.tight_layout()
+plt.show()

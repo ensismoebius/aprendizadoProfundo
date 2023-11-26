@@ -1,4 +1,4 @@
-\begin{lstlisting}[language=Python, caption={Full implementation of a Hodkin-Huxley neuron}]
+\begin{lstlisting}[language=Python, caption={Full implementation of a Hodkin-Huxley neuron}, label={lst:Hodkin-Huxley}]
 import math
 import matplotlib.pyplot as plt
 
@@ -71,24 +71,5 @@ for t in range(int(t_max / dt)):
 	gating_variables_m.append(m)
 	gating_variables_h.append(h)
 	gating_variables_n.append(n)
-
-# Plot results
-plt.figure(figsize=(10, 6))
-plt.subplot(2, 1, 1)
-plt.plot(time_points, membrane_potential, label='Membrane Potential (mV)')
-plt.title('Hodgkin-Huxley Neuron Model')
-plt.ylabel('Voltage (mV)')
-plt.legend()
-
-plt.subplot(2, 1, 2)
-plt.plot(time_points, gating_variables_m, label='m')
-plt.plot(time_points, gating_variables_h, label='h')
-plt.plot(time_points, gating_variables_n, label='n')
-plt.xlabel('Time (ms)')
-plt.ylabel('Gating Variables')
-plt.legend()
-
-plt.tight_layout()
-plt.show()
 
 \end{lstlisting}
