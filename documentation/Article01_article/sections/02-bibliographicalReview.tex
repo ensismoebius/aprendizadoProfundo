@@ -6,9 +6,7 @@
 		
 		\par The \textit{wet} electrodes are placed using conductive gel and are less prone to movement artifacts which are electromagnetic interferences caused by some motion like blinking. \textit{Dry} electrodes does not need the gel but is more sensible to artifacts.
 		
-		\par EEG records the electrical activities of the brain, typically placing along the scalp surface electrodes. These electrical activities result from ionic current flows induced by the synchronized synaptic activation of the brain's neurons. They manifest as rhythmic voltage fluctuations ranging from 5 to 100$\mu V$ in amplitude and between 0.5 and 40 Hz in frequency\cite{JALALYBIDGOLY2020101788}.
-
-		\par The operational frequencies bands in the brain are following \cite{sanei2021eeg}:
+		\par EEG records the electrical activities of the brain, typically placing along the scalp surface electrodes. These electrical activities result from ionic current flows induced by the synchronized synaptic activation of the brain's neurons. They manifest as rhythmic voltage fluctuations ranging from 5 to 100$\mu V$ in amplitude and between 0.5 and 40 Hz in frequency\cite{JALALYBIDGOLY2020101788}. The operational frequencies bands in the brain are following \cite{sanei2021eeg}:
 		
 		\begin{itemize}
 			\item \textbf{Delta (1–4Hz)}: The slowest and usually the highest amplitude waveform. The Delta band is observed in babies and during deep sleep in adults.
@@ -22,7 +20,7 @@
 			\item \textbf{Gamma (over 25Hz)}: Observed during multiple sensory processing. Gamma patterns have the lowest amplitude.
 		\end{itemize}
 
-		\par According to \cite{JALALYBIDGOLY2020101788}, for most of the tasks brain do, there is regions associated with it. These ones are described in Table \ref{tb:brainRegions}.
+		\par According to \cite{JALALYBIDGOLY2020101788}, for most of the tasks brain do, there are regions associated with it as seen in Table \ref{tb:brainRegions}.
 	
 		\begin{table}[H]
 			\begin{center}
@@ -48,9 +46,9 @@
 			\end{center}
 		\end{table}
 	
-		\begin{figure}[h]
+		\begin{figure}[H]
 			\centering
-			\includegraphics[width=0.5\linewidth]{images/10–20StandardAndLobes}
+			\includegraphics[width=0.44\linewidth]{images/10–20StandardAndLobes}
 			\caption[10-20 standard and brain lobes]{Electrodes placement according to 10-20 standard \cite{sistema10-20} and brain's lobes. Odd numbers are assigned to the electrodes on the left hemisphere, and even numbers are assigned to the electrodes on the right. Source \cite{JALALYBIDGOLY2020101788}}
 			\label{fig:1020standardandlobes}
 		\end{figure}
@@ -68,28 +66,34 @@
 		
 		\par An SNN \textbf{is not} a one-to-one simulation of neurons. Instead, it approximates certain computational capabilities of specific biological properties. Some studies like \cite{jones2020single} created models way closer to natural neurons exploring the nonlinearity of dendrites and another neuron features yielding remarkable results in the classification.
 		
-		\par As can be seen in Figure \ref{fig:neuronspike} SNNs neurons, given the correct parameters, are very noise tolerant because it acts as a \textbf{lowpass filter}. Generating spikes even when a considerably level of interference is present. This units are very time-oriented too, being great when it comes to process streams of data \cite{10242251}.
-		
-		\begin{figure}[H]
-			\centering
-			\includegraphics[width=.6\linewidth]{images/neuronSpikes}
-			\caption{Spikes from a noisy signal. Source \cite{dan_goodman_2022_7044500}}
-			\label{fig:neuronspike}
-		\end{figure} 
+		\begin{multicols}{2}
+			\par As can be seen in Figure \ref{fig:neuronspike} SNNs neurons, given the correct parameters, are very noise tolerant because it acts as a \textbf{lowpass filter}. Generating spikes even when a considerably level of interference is present. This units are very time-oriented too, being great when it comes to process streams of data \cite{10242251}.
+		\columnbreak
+			\begin{figure}[H]
+				\centering
+				\includegraphics[width=.88\linewidth]{images/neuronSpikes}
+				\caption{Spikes from a noisy signal. Source \cite{dan_goodman_2022_7044500}}
+				\label{fig:neuronspike}
+			\end{figure} 
+		\end{multicols}
 
 	\subsection{Spiking Neuron}
 		\par Although this work focus in just \textit{Leaky Integrate and Fire Neurons} (LIF) because is simpler, more efficient and currently generalize better for most of the problems \cite{dan_goodman_2022_7044500}, there is one interesting enough, because it paves the way to another ones, that worth to mention:
 	
 		\subsubsection{Hodgkin-Huxley neuron}
 			\par The Hodgkin-Huxley neuron \cite{gerstner2014neuronal} was modeled conducting experiments on a giant axon of a squid and identified three distinct types of ion currents: $Na^+$ (sodium), $K^+$ (Potassium), and a leak current primarily composed of $Cl^-$ (chloride) ions.
-			\par Like can be seen in Figure \ref{fig:hodgkin-huxleymodel} this neuron is modeled as conjunction of a resistor $R$, potentiometers $R_{Na}, R_{K}$ and a capacitor $C$ along with  batteries (ion concentrators) $E_L, E_{Na}, E_K$  in which an current $I$ is injected. The potentiometers indicate the channels of $Na^+$ and $K^+$ which can ben opened or closed, the batteries represents Nernst potential \cite{2023Gibbs} for each channel.
 			
-			\begin{figure}[H]
-				\centering
-				\includegraphics[width=0.7\linewidth]{images/Hodgkin-HuxleyModel}
-				\caption{Schematic diagram for the Hodgkin-Huxley model. Source: \cite{gerstner2014neuronal}}
-				\label{fig:hodgkin-huxleymodel}
-			\end{figure}
+			
+			\begin{multicols}{2}
+				\par Like can be seen in Figure \ref{fig:hodgkin-huxleymodel} this neuron is modeled as conjunction of a resistor $R$, potentiometers $R_{Na}, R_{K}$ and a capacitor $C$ along with  batteries (ion concentrators) $E_L, E_{Na}, E_K$  in which an current $I$ is injected. The potentiometers indicate the channels of $Na^+$ and $K^+$ which can ben opened or closed, the batteries represents Nernst potential \cite{2023Gibbs} for each channel.
+			\columnbreak
+				\begin{figure}[H]
+					\centering
+					\includegraphics[width=0.5\linewidth]{images/Hodgkin-HuxleyModel}
+					\caption{Schematic diagram for the Hodgkin-Huxley model. Source: \cite{gerstner2014neuronal}}
+					\label{fig:hodgkin-huxleymodel}
+				\end{figure}
+			\end{multicols}
 			
 			\par Given that:
 			\begin{itemize}
@@ -118,7 +122,8 @@
 	
 			\begin{multicols}{2}
 			
-				\par Equations \ref{eq:Hodgkin-HuxleyNeuronEq2}, \ref{eq:Hodgkin-HuxleyNeuronEq3}, \ref{eq:Hodgkin-HuxleyNeuronEq4} are the rate of change of the gating variables $m, h$, and $n$, which represent the probability that the $Na^+$ and $K^+$ channels are open. \newline		
+				\par Equations \ref{eq:Hodgkin-HuxleyNeuronEq2}, \ref{eq:Hodgkin-HuxleyNeuronEq3}, \ref{eq:Hodgkin-HuxleyNeuronEq4} are the rate of change of the gating variables $m, h$, and $n$, which represent the probability that the $Na^+$ and $K^+$ channels are open.
+				\input{listings/hodkinEquation02-04.py}
 	
 			\columnbreak
 	
@@ -138,10 +143,10 @@
 				\end{equation}
 			
 			\end{multicols}
-			\input{listings/hodkinEquation02-04.py}
 			
 			\begin{multicols}{2}
-				\par Next are the helper functions representing the $\alpha$ and $\beta$. They are used to calculate the rate constants for the gating variables in the differential equations.	
+				\par The helper functions representing the $\alpha$ and $\beta$ are used to calculate the rate constants for the gating variables in the differential equations.	
+				\input{listings/hodkinHelperFunctions.py}
 			\columnbreak
 				\begin{equation}
 					\alpha_m(V) = 0.1 \frac{V + 40.0}{1.0 - \exp\left(-\frac{V + 40.0}{10.0}\right)}
@@ -167,7 +172,6 @@
 					\beta_n(V) = 0.125 \exp\left(-\frac{V + 65.0}{80.0}\right)
 				\end{equation}
 			\end{multicols}
-			\input{listings/hodkinHelperFunctions.py}
 			
 			\begin{figure}[H]
 				\centering
@@ -182,30 +186,35 @@
 
 		\subsubsection{Leaky Integrate and Fire Neuron}
 			\par The Leaky Integrate and Fire Neuron (LIF) is one of the simplest neuron models in SNNs, still, it can applied successfully to most of the problems in with SNNs can be used.
-			\par LIF, like a NN neuron takes the sum of weighted inputs but, rather than pass it directly to its activation function, some \textit{leakage} is applied which descreases in some degree the sum. LIF behave much like Resistor-Capacitor circuits as can be seen in Figure \ref{fig:rcmodel}.
+			\begin{multicols}{2}
+				\par LIF, like a NN neuron takes the sum of weighted inputs but, rather than pass it directly to its activation function, some \textit{leakage} is applied, which decreases in some degree the sum. 
+				\par LIF behave much like Resistor-Capacitor circuits as can be seen in Figure \ref{fig:rcmodel}. Here $R$ is resistance to the leakage, $I_{in}$ the input current, $C$ the capacitance, $U_{mem}$ means the accumulated action potential and $v$ is a switch that lets the capacitor discharge (i.e. emit a spike) when some potential threshold is reached.
+			\columnbreak
+				\begin{figure}[H]
+					\centering
+					\includegraphics[width=0.5\linewidth]{images/rcmodel}
+					\caption[The RC model]{RC model: Source: \cite{10242251}}
+					\label{fig:rcmodel}
+				\end{figure}
+			\end{multicols}
 			
-			\begin{figure}[H]
-				\centering
-				\includegraphics[width=0.2\linewidth]{images/rcmodel}
-				\caption[The RC model]{RC model: $R$ is resistance to the leakage, $I_{in}$ the input current, $C$ the capacitance, $U_{mem}$ means the accumulated action potential and $v$ is a switch that lets the capacitor discharge (i.e. emit a spike) when some potential threshold is reached. Source: \cite{10242251}}
-				\label{fig:rcmodel}
-			\end{figure}
+			\par Unlike the Hodgkin-Huxley neuron, spikes are represented as \textbf{sparsely} distributed \textbf{ones} in a train of \textbf{zeros}, as illustrated in Figure \ref{fig:spikessparsitystaticsupress} and \ref{fig:sparsity}. This approach simplify the models and reduces the computational power and needed storage to run an SNN.\newline
 			
-			\par Unlike the Hodgkin-Huxley neuron, spikes are represented as \textbf{sparsely} distributed \textbf{ones} in a train of \textbf{zeros}, as illustrated in Figure \ref{fig:spikessparsitystaticsupress} and \ref{fig:sparsity}. This approach simplify the models and reduces the computational power and needed storage to run an SNN.
-			
-			\begin{figure}[H]
-				\centering
-				\includegraphics[width=0.6\linewidth]{images/spikesSparsityStaticSupress}
-				\caption{Sparsity on Spike Neuron Networks. Source: \cite{10242251}}
-				\label{fig:spikessparsitystaticsupress}
-			\end{figure}
-			
-			\begin{figure}[H]
-				\centering
-				\includegraphics[width=.8\linewidth]{images/sparsity}
-				\caption[Sparse activity of a SNN]{Sparse activity of a SNN: The horizontal axis represents the time step of some data being processed the vertical are the SNN neuron number. Note that, most of the time, very few neurons gets activated. Source: The author.}
-				\label{fig:sparsity}
-			\end{figure}
+			\begin{multicols}{2}
+				\begin{figure}[H]
+					\centering
+					\includegraphics[width=\linewidth]{images/spikesSparsityStaticSupress}
+					\caption{Sparsity on Spike Neuron Networks. Source: \cite{10242251}}
+					\label{fig:spikessparsitystaticsupress}
+				\end{figure}
+			\columnbreak
+				\begin{figure}[H]
+					\centering
+					\includegraphics[width=.5\linewidth]{images/sparsity}
+					\caption[Sparse activity of a SNN]{Sparse activity of a SNN: The horizontal axis represents the time step of some data being processed the vertical are the SNN neuron number. Note that, most of the time, very few neurons gets activated. Source: The author.}
+					\label{fig:sparsity}
+				\end{figure}
+			\end{multicols}
 				
 			\par As result of the mentioned above, in SNN information is coded in format of \textit{timing} and/or \textit{rate} of spikes giving consequently great capabilities of processing streams of data but limiting the processing of static data.\newline
 			
@@ -296,14 +305,16 @@
 	 	
 	 		\par Then one can say that: In the absence of an input $I_{in}$, the membrane potential decays exponentially as illustrated in Figure \ref{fig:membranepotentialdecay} and implemented in Listing \ref{lst:membranepotentialdecay}.
 	 		
-	 		\input{listings/membranepotentialdecay.py}
-	 		
-	 		\begin{figure}[H]
-	 			\centering
-	 			\includegraphics[width=0.7\linewidth]{images/membranePotentialDecay}
-	 			\caption{Membrane potential decaying. Source: The author}
-	 			\label{fig:membranepotentialdecay}
-	 		\end{figure}
+	 		\begin{multicols}{2}
+	 			\input{listings/membranepotentialdecay.py}
+	 		\columnbreak
+		 		\begin{figure}[H]
+		 			\centering
+		 			\includegraphics[width=\linewidth]{images/membranePotentialDecay}
+		 			\caption{Membrane potential decaying. Source: The author}
+		 			\label{fig:membranepotentialdecay}
+		 		\end{figure}
+	 		\end{multicols}
  			
  			\par With the results from Equation \ref{eq:finalMem} it is possible to calculate the action potential increasing as seen in Equation \ref{eq:actionpotincrease}.
  			
