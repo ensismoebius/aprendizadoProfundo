@@ -13,10 +13,10 @@
 		\caption{Spiking neural network architecture}
 		\label{fig:architecturesnn}
 	\end{figure}
-	\begin{multicols}{2}
+
 		\par The SNN were trained according to the following parameters:
 		\begin{itemize}
-			\item \textbf{random seed}: 69 (\textit{nice!})
+			\item \textbf{random seed}: 42
 			\item \textbf{learning rate}: $2.10^{-4}$
 			\item \textbf{test batch size}: 40\%
 			\item \textbf{training batch size}: 60\%
@@ -26,9 +26,8 @@
 			\item \textbf{insist}: 4 (amount of times the same data is presented to the network)
 			\item \textbf{neuron decay rate}: 0.9 (the rate LIF neuron loses its voltage)
 		\end{itemize}
-	\columnbreak	
+
 		\input{listings/snnArchitecture.py}
-	\end{multicols}
 
 
 	\subsection{Convolutional layer with full connected sigmoid neurons CNN}
@@ -40,10 +39,9 @@
 		\label{fig:architecturecnn}
 	\end{figure}
 
-	\begin{multicols}{2}
 		\par The CNN were trained according to the following parameters:
 		\begin{itemize}
-			\item \textbf{random seed}: 69 (\textit{nice!})
+			\item \textbf{random seed}: 42
 			\item \textbf{learning rate}: $2.10^{-4}$
 			\item \textbf{test batch size}: 40\%
 			\item \textbf{training batch size}: 60\%
@@ -51,9 +49,7 @@
 			\item \textbf{loss function}: Cross-entropy
 			\item \textbf{optimizer}: Adam ($0.00001 \leq \beta \leq 0.999$)
 		\end{itemize}
-	\columnbreak	
 		\input{listings/cnnArchitecture.py}
-	\end{multicols}
 
 
 	\par The used  database \cite{PRG16} can be found at \href{https://sinc.unl.edu.ar/grants/brain-computer-interfaces/}{https://sinc.unl.edu.ar/grants/brain-computer-interfaces} and consists in a set of EEG data recorded with 6 electrodes during a imagined speech of the words in spanish: 
