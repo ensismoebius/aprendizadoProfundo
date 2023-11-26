@@ -1,3 +1,14 @@
+"""
+Summary:
+This code simulates the behavior of a Leaky Integrate-and-Fire (LIF) neuron using a 
+custom class. The LIFNeuron class defines the dynamics of the neuron, and the 
+`simulate_lif_neuron` function conducts the simulation with specified parameters. 
+The membrane potential and input current are plotted over time, demonstrating the 
+response of the LIF neuron to an input current pulse. The plot includes key points 
+such as the threshold, resting potential, and spike times, providing insights into 
+the neuron's behavior.
+"""
+
 import numpy as np
 import matplotlib.pyplot as plt
 

@@ -1,3 +1,14 @@
+"""
+Summary:
+This code simulates the Hodgkin-Huxley neuron model, which describes the behavior 
+of the action potential in a neuron. The model includes membrane capacitance and 
+ion conductances for sodium, potassium, and leakage currents. The simulation uses 
+the Euler method to update the membrane potential and gating variables over time 
+in response to an injected current. The results, including membrane potential and 
+gating variables (m, h, n), are plotted to visualize the dynamics of the Hodgkin-Huxley 
+neuron model.
+"""
+
 import math
 import matplotlib.pyplot as plt
 

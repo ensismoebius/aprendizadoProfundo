@@ -1,3 +1,13 @@
+"""
+Summary:
+This code simulates the behavior of a Leaky Integrate-and-Fire (LIF) neuron model
+in response to a given input current over time. The `lif` function is used to 
+iteratively compute the membrane potential, considering the input current, membrane 
+time constant, and threshold. The results are plotted to visualize both the membrane 
+potential dynamics and the input current profile. The code provides insights into 
+the response of an LIF neuron to different input patterns.
+"""
+
 import math
 import matplotlib.pyplot as plt
 import numpy as np

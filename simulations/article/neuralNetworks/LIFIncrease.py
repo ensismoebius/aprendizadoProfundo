@@ -1,3 +1,13 @@
+"""
+Summary:
+This code simulates the membrane potential increase in a Leaky Integrate-and-Fire (LIF) 
+neuron model. The `lifIncrease` function iteratively computes the membrane potential 
+over a specified number of time steps. The results are plotted to visualize the change 
+in membrane potential over time. The code provides insights into the behavior of a 
+simple LIF neuron in response to an input current, demonstrating the characteristic 
+increase in membrane potential.
+"""
+
 import math
 import matplotlib.pyplot as plt
 

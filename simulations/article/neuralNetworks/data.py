@@ -1,3 +1,13 @@
+"""
+Summary:
+This code defines an EEGDataset class for handling EEG data. The dataset is loaded 
+from a specified path, and various properties are set up, such as stimuli, modalities, 
+and artifacts. The data is organized into channels, and specific columns are joined 
+into arrays or single values for ease of use. The dataset is filtered based on 
+modalities and artifacts, and the resulting labels and data are used to create a 
+PyTorch Dataset. The class includes methods for joining columns and creating the 
+dataset, making it suitable for EEG classification tasks, especially with pytorch. 
+"""
 import numpy as np
 import pandas as pd
 from scipy.io import loadmat
@@ -12,7 +22,6 @@ class EEGDataset(Dataset):
         ### Loading data ###
         ####################
         
-        # '/home/ensismoebius/Documentos/UNESP/doutorado/databases/Base de Datos Habla Imaginada/S01/S01_EEG.mat',
         mat = loadmat(path, struct_as_record=True, squeeze_me=True, mat_dtype=False)
         
         #################################

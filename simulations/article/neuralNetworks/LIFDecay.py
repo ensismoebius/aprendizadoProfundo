@@ -1,3 +1,12 @@
+"""
+Summary:
+This code simulates the membrane potential decay in a Leaky Integrate-and-Fire (LIF) 
+neuron model. The `lifDecay` function iteratively computes the membrane potential over 
+a specified number of time steps with a decaying input. The results are plotted to 
+visualize the decrease in membrane potential over time. The code provides insights 
+into the behavior of a simple LIF neuron when subjected to a zero input current.
+"""
+
 import math
 import matplotlib.pyplot as plt
 
