@@ -2,9 +2,9 @@
 	\label{sec:revBibli}
 	
 	\subsection{Brain-Computer Interface and EEG}
-		\par Among the methods of Brain-Computer Interface (BCI), Electroencephalogram (EEG) stands out as the most cost-effective and simple system to implement. However, it does have some quirks, such as high sensitivity to electromagnetic interference and difficulty in capturing the signal due to suboptimal scalp placement of the electrodes. So one of the fundamental aspect that any EEG processing system must have is the tolerance to noise \cite{JALALYBIDGOLY2020101788}.
+		\par Among the methods of Brain-Computer Interface (BCI), Electroencephalogram (EEG) stands out as the most cost-effective and simple system to implement. However, it does have some quirks, such as high sensitivity to electromagnetic interference and difficulty in capturing the signal due to suboptimal scalp placement of the electrodes. So one of the fundamental aspects that any EEG processing system must have is the tolerance to noise \cite{JALALYBIDGOLY2020101788}.
 		
-		\par The \textit{wet} electrodes are placed using conductive gel and are less prone to movement artifacts which are electromagnetic interferences caused by some motion like blinking. \textit{Dry} electrodes does not need the gel but is more sensible to artifacts.
+		\par The \textit{wet} electrodes are placed using conductive gel and are less prone to movement artifacts which are electromagnetic interferences caused by some motion like blinking. \textit{Dry} electrodes do not need the gel but is more sensible to artifacts.
 		
 		\par EEG records the electrical activities of the brain, typically placing along the scalp surface electrodes. These electrical activities result from ionic current flows induced by the synchronized synaptic activation of the brain's neurons. They manifest as rhythmic voltage fluctuations ranging from 5 to 100$\mu V$ in amplitude and between 0.5 and 40 Hz in frequency\cite{JALALYBIDGOLY2020101788}. The operational frequencies bands in the brain are following \cite{sanei2021eeg}:
 		
@@ -40,7 +40,7 @@
 		\par In order to get the aforementioned advantages the Spiking Neural Networks (SNNs) instead of employing continuous activation values, like NNs, SNNs utilize \textbf{spikes} at the input, hidden and outputs layers. SNNs can have continuous inputs as well and keep its properties.
 		
 		
-		\par An SNN \textbf{is not} a one-to-one simulation of neurons. Instead, it approximates certain computational capabilities of specific biological properties. Some studies like \cite{jones2020single} created models way closer to natural neurons exploring the nonlinearity of dendrites and another neuron features yielding remarkable results in the classification.
+		\par A SNN \textbf{is not} a one-to-one simulation of neurons. Instead, it approximates certain computational capabilities of specific biological properties. Some studies like \cite{jones2020single} created models way closer to natural neurons exploring the nonlinearity of dendrites and another neuron features yielding remarkable results in the classification.
 		
 			\par As can be seen in Figure \ref{fig:neuronspike} SNNs neurons, given the correct parameters, are very noise tolerant because it acts as a \textbf{lowpass filter}. Generating spikes even when a considerably level of interference is present. This units are very time-oriented too, being great when it comes to process streams of data \cite{10242251}.
 
@@ -55,7 +55,7 @@
 		\par Although the focus of this work is the \textit{Leaky Integrate and Fire Neurons} (LIF) because is simpler, more efficient and currently generalize better for most of the problems \cite{dan_goodman_2022_7044500}, there are more biological accurate model like \textbf{Hodgkin-Huxley neuron} \cite{gerstner2014neuronal} and ones like \cite{jones2020single} that created models closer to natural neurons exploring the nonlinearity of dendrites and other neuron features.
 	
 		\subsubsection{Leaky Integrate and Fire Neuron}
-			\par The Leaky Integrate and Fire Neuron (LIF) is one of the simplest neuron models in SNNs, still, it can applied successfully to most of the problems in with SNNs can be used.
+			\par The Leaky Integrate and Fire Neuron (LIF) is one of the simplest neuron models in SNNs, still, it can be applied successfully to most of the problems in with SNNs can be used.
 
 			\par LIF, like a NN neuron takes the sum of weighted inputs but, rather than pass it directly to its activation function, some \textit{leakage} is applied, which decreases in some degree the sum. 
 			\par LIF behave much like Resistor-Capacitor circuits as can be seen in Figure \ref{fig:rcmodel}. Here $R$ is resistance to the leakage, $I_{in}$ the input current, $C$ the capacitance, $U_{mem}$ means the accumulated action potential and $v$ is a switch that lets the capacitor discharge (i.e. emit a spike) when some potential threshold is reached.
@@ -67,7 +67,7 @@
 				\label{fig:rcmodel}
 			\end{figure}
 			
-			\par Unlike the Hodgkin-Huxley neuron, spikes are represented as \textbf{sparsely} distributed \textbf{ones} in a train of \textbf{zeros}, as illustrated in Figure \ref{fig:spikessparsitystaticsupress} and \ref{fig:sparsity}. This approach simplify the models and reduces the computational power and needed storage to run an SNN.\newline
+			\par Unlike the Hodgkin-Huxley neuron, spikes are represented as \textbf{sparsely} distributed \textbf{ones} in a train of \textbf{zeros}, as illustrated in Figure \ref{fig:spikessparsitystaticsupress} and \ref{fig:sparsity}. This approach simplify the models and reduces the computational power and needed storage to run a SNN.\newline
 			
 			\begin{figure}[H]
 				\centering
@@ -151,7 +151,7 @@
 				\end{aligned}
 			\end{equation}
 		
-			\par From that, and setting $I_{in} = 0$ (i.e. no input) and considering $\tau = R.C$ is a constant and an starting voltage $V_{mem}(0)$ the neuron's voltage behavior can be modeled as an exponential curve as can be seen in Equation \ref{eq:expmembrane}.
+			\par From that, and setting $I_{in} = 0$ (i.e. no input) and considering $\tau = R.C$ is a constant and a starting voltage $V_{mem}(0)$ the neuron's voltage behavior can be modeled as an exponential curve as can be seen in Equation \ref{eq:expmembrane}.
 		
 		 	\begin{equation}
 		 		\label{eq:expmembrane}
@@ -214,7 +214,7 @@
  			
  	\subsection{Training}
  	
-		\par \textbf{How do SNNs get trained?} Well, this is still an open question. An SNN neuron has an activation-function behavior that is more relatable to a \textbf{step function}. Therefore, in principle, we can't use gradient descent-based solutions because this kind of function \textbf{is not} differentiable \cite{kasabov2019time}.
+		\par \textbf{How do SNNs get trained?} Well, this is still an open question. A SNN neuron has an activation-function behavior that is more relatable to a \textbf{step function}. Therefore, in principle, we can't use gradient descent-based solutions because this kind of function \textbf{is not} differentiable \cite{kasabov2019time}.
 		
 		\par But there are some insights out there that may shed some light on this subject: While some \textit{in vivo/in vitro} observations show that brains, in general, learn by strengthening/weakening and adding/removing synapses or even by creating new neurons or other cumbersome methods like RNA packets, there are some more acceptable ones like the ones in the list bellow \cite{kasabov2019time}:
  	
